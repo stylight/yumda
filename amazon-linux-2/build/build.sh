@@ -1,3 +1,3 @@
 #!/bin/sh
 
-docker build --pull --squash -t lambci/yumda:build-2 .
+docker build --pull -t lambci/yumda:build-2 .

@@ -67,7 +67,7 @@
 
 # Do not forget to bump pam_ssh_agent_auth release if you rewind the main package release to 1
 %define openssh_ver 7.4p1
-%define openssh_rel 21
+%define openssh_rel 22
 %define pam_ssh_agent_ver 0.10.3
 %define pam_ssh_agent_rel 2
 
@@ -257,12 +257,15 @@ Patch960: openssh-7.5p1-sftp-empty-files.patch
 Patch961: openssh-7.4p1-CVE-2018-15473.patch
 # invalidate supplemental group cache used by temporarily_use_uid() (#1619079)
 Patch962: openssh-7.4p1-uidswap.patch
+# CVE-2021-41617
+Patch978: openssh-8.7p1-upstream-cve-2021-41617.patch
 
 ## AMZN2 Patches
 Patch5001: CVE-2018-20685.patch
 Patch5002: CVE-2019-6109a.patch
 Patch5003: CVE-2019-6109b.patch
 Patch5004: CVE-2019-6111.patch
+Patch5005: openssh-7.4p1-amzn-chronicle.patch
 
 License: BSD
 Group: Applications/Internet
@@ -519,6 +522,7 @@ popd
 %patch960 -p1 -b .sftp-empty
 %patch961 -p1 -b .CVE-2018-15473
 %patch962 -p1 -b .uidswap
+%patch978 -p1 -b .cve-2021-41617
 
 %patch200 -p1 -b .audit
 %patch202 -p1 -b .audit-race
@@ -530,6 +534,7 @@ popd
 %patch5002 -p1
 %patch5003 -p1
 %patch5004 -p1
+%patch5005 -p1
 
 %if 0
 # Nothing here yet
@@ -850,6 +855,17 @@ getent passwd sshd >/dev/null || \
 %endif
 
 %changelog
+* Thu Sep 30 2021 Dmitry Belyavskiy <dbelyavs@redhat.com> - 7.4p1-22 + 0.10.3-2
+- avoid segfault in Kerberos cache cleanup (#1999263)
+- fix CVE-2021-41617 (#2008884)
+
+* Tue Mar 06 2021 Robert Nickel <halfdime@amazon.com> - 7.4p1-21.amzn2.0.3
+- audit_encode_nv_string instead of audit_encode_value.
+- Code formatting fixes.
+
+* Tue Mar 02 2021 Robert Nickel <halfdime@amazon.com> - 7.4p1-21.amzn2.0.2
+- Add additional audit logging for cert based authentications.
+
 * Tue Jun 25 2019 Jakub Jelen <jjelen@redhat.com> - 7.4p1-21 + 0.10.3-2
 - Avoid double comma in the default cipher list in FIPS mode (#1722446)
 
